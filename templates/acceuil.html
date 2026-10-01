@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MiniConnect - Accueil</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            MiniConnect
+        </div>
+
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="{{url_for('profil')}}">Profil</a>
+            <a href="/deconnexion">Déconnexion</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <section class="bienvenue">
+
+            <h1>Bienvenue {{ name }} 👋</h1>
+
+            <p>
+                Heureux de vous revoir sur MiniConnect.
+            </p>
+
+        </section>
+
+
+        <section class="cartes">
+
+            <div class="carte">
+                <h2>Mon profil</h2>
+                <p>
+                    Consultez et modifiez vos informations personnelles.
+                </p>
+                <a href="{{ url_for('profil') }}" class="bouton">Voir mon profil</a>
+            </div>
+
+
+            <div class="carte">
+                <h2>Mes contacts</h2>
+                <p>
+                    Retrouvez vos contacts et découvrez de nouvelles personnes.
+                </p>
+                <a href="{{url_for('conctacts')}}" class="bouton">Voir mes contacts</a>
+            </div>
+
+
+            <div class="carte">
+                <h2>Messages</h2>
+                <p>
+                    Consultez vos conversations et vos nouveaux messages.
+                </p>
+                <a href="#" class="bouton">Voir mes messages</a>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>© 2026 MiniConnect</p>
+    </footer>
+
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

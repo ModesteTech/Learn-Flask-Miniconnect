@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MiniConnect - Mes contacts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            MiniConnect
+        </div>
+
+        <nav>
+            <a href="{{ url_for('acceuil') }}">Accueil</a>
+            <a href="{{ url_for('profil') }}">Profil</a>
+            <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <section class="contacts">
+
+            <h1>Mes contacts</h1>
+
+            {% if contacts %}
+
+                <div class="liste-contacts">
+
+                    {% for contact in contacts %}
+
+                        <div class="contact">
+
+                            <h2>{{ contact[1] }}</h2>
+
+                            <p>
+                                {{ contact[2] }}
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="aucun-contact">
+                    Vous n'avez pas encore de contacts.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <div class="ajouter-contact">
+
+            <h2>Ajouter un contact</h2>
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Nom du contact"
+                    required
+                >
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email du contact"
+                    required
+                >
+
+                <button type="submit">
+                    Ajouter
+                </button>
+
+            </form>
+
+        </div>
+
+        
+
+    </main>
+
+
+    <footer>
+        <p>© 2026 MiniConnect</p>
+    </footer>
+
+</body>
+
+</html>

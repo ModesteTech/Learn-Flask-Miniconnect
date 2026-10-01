@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MiniConnect - Mon profil</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            MiniConnect
+        </div>
+
+        <nav>
+            <a href="{{ url_for('acceuil') }}">Accueil</a>
+            <a href="{{ url_for('profil') }}">Profil</a>
+            <a href="{{ url_for('deconnexion') }}">Déconnexion</a>
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <section class="profil">
+
+            <h1>Mon profil</h1>
+
+            <div class="informations">
+
+                <p>
+                    <strong>ID :</strong>
+                    {{ utilisateur[0] }}
+                </p>
+
+                <p>
+                    <strong>Nom :</strong>
+                    {{ utilisateur[1] }}
+                </p>
+
+                <p>
+                    <strong>Email :</strong>
+                    {{ utilisateur[2] }}
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        <p>© 2026 MiniConnect</p>
+    </footer>
+
+</body>
+
+</html>
+```
