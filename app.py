@@ -58,7 +58,17 @@ def inscription():
             """,(name,email,password))
 
             conn.commit()
+
+            utilisateur=conn.execute("""
+            SELECT id,name FROM utilisateurs
+            WHERE email=?
+            """,(email,)).fetchone()
+
             conn.close()
+
+            session["utilisateur_id"]=utilisateur[0]
+            session["name"]=utilisateur[1]
+
         except sqlite3.IntegrityError:
             return render_template("inscription.html",erreur="Cet email existe deja !")
 
