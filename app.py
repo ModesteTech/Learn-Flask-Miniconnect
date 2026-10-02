@@ -4,6 +4,7 @@ import sqlite3
 app=Flask(__name__)
 
 app.secret_key="ma_clé_secrète"
+
 @app.route("/")
 def acceuil():
 
@@ -143,39 +144,49 @@ def conctacts():
     utilisateur_id=session["utilisateur_id"]
 
     conn=sqlite3.connect("miniconnect.bd")
-
-    
-    
+            
     if request.method=="POST":
         name=request.form.get("name")
         email=request.form.get("email")
 
-        curseur=conn.execute("""INSERT INTO utilisateurs (name,email,password)
-        VALUES (?,?,?)
-        """,(name,email,"0000"))
-        conctact_id=curseur.lastrowid
+        test=conn.execute("""
+                        SELECT id FROM utilisateurs
+                        WHERE email=?
+                        """,(email,)).fetchone()
 
-        conn.execute("""
-        INSERT INTO conctacts (utilisateurs_id,conctacts_id)
-        VALUES (?,?)
-        """,(utilisateur_id,conctact_id))
+        try:
+            if test:
+                if test[0]==utilisateur_id:
+                    return render_template('conctacts.html',erreur="Vous ne pouvez pas vous ajoutez vous-meme" )
+                conn.execute("""
+                INSERT INTO conctacts (utilisateurs_id,conctacts_id)
+                VALUES (?,?)
+                """,(utilisateur_id,test[0]))
 
-        conn.commit()
+                conn.commit()
+            else:
+                return render_template('conctacts.html',erreur="Ce compte n'existe pas" )
+        except sqlite3.IntegrityError:
+            return render_template('conctacts.html',erreur="Cet email existe deja ! Ajout impossible" )
+            
 
-    conctacts=conn.execute("""
-                SELECT utilisateurs.id,utilisateurs.name,utilisateurs.email
-                FROM conctacts
-                JOIN utilisateurs
-                ON conctacts.conctacts_id=utilisateurs.id
-                WHERE conctacts.utilisateurs_id=?
-                """,(utilisateur_id,)).fetchall()
+    contacts=conn.execute("""
+            SELECT utilisateurs.id,utilisateurs.name,utilisateurs.email
+            FROM conctacts
+            JOIN utilisateurs
+            ON conctacts.conctacts_id=utilisateurs.id
+            WHERE conctacts.utilisateurs_id=?
+            """,(utilisateur_id,)).fetchall()
         
     conn.close()
 
+    return render_template('conctacts.html',contacts=contacts)
     
+@app.route("/message")
+def message():
+    return render_template("message.hmtl")
 
-    return render_template('conctacts.html',contacts=conctacts)
-
+    
 
 
 
