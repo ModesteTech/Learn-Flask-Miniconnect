@@ -47,6 +47,10 @@
                                 {{ contact[2] }}
                             </p>
 
+                            <a href="{{ url_for('supprimer_conctact', conctact_id=contact[0]) }}">
+                                Supprimer
+                            </a>
+
                         </div>
 
                     {% endfor %}

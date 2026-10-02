@@ -144,7 +144,8 @@ def conctacts():
     utilisateur_id=session["utilisateur_id"]
 
     conn=sqlite3.connect("miniconnect.bd")
-            
+
+    erreur=""        
     if request.method=="POST":
         name=request.form.get("name")
         email=request.form.get("email")
@@ -153,11 +154,11 @@ def conctacts():
                         SELECT id FROM utilisateurs
                         WHERE email=?
                         """,(email,)).fetchone()
-
+        
         try:
             if test:
                 if test[0]==utilisateur_id:
-                    return render_template('conctacts.html',erreur="Vous ne pouvez pas vous ajoutez vous-meme" )
+                    erreur="Vous ne pouvez pas vous ajoutez vous-meme"
                 conn.execute("""
                 INSERT INTO conctacts (utilisateurs_id,conctacts_id)
                 VALUES (?,?)
@@ -165,9 +166,9 @@ def conctacts():
 
                 conn.commit()
             else:
-                return render_template('conctacts.html',erreur="Ce compte n'existe pas" )
+                erreur="Ce compte n'existe pas"
         except sqlite3.IntegrityError:
-            return render_template('conctacts.html',erreur="Cet email existe deja ! Ajout impossible" )
+            erreur="Cet email existe deja ! Ajout impossible"
             
 
     contacts=conn.execute("""
@@ -180,7 +181,27 @@ def conctacts():
         
     conn.close()
 
-    return render_template('conctacts.html',contacts=contacts)
+    return render_template('conctacts.html',contacts=contacts,erreur=erreur)
+
+@app.route("/supprimer_conctact,<int:conctact_id>")
+def supprimer_conctact(conctact_id):
+
+    if "utilisateur_id" not in session:
+        return redirect(url_for('connexion'))
+
+    utilisateur_id=session['utilisateur_id']
+
+    conn=sqlite3.connect('miniconnect.bd')
+    conn.execute("""
+    DELETE FROM conctacts
+    WHERE utilisateurs_id=?
+    AND conctacts_id=?
+    """,(utilisateur_id,conctact_id))
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('conctacts'))
     
 @app.route("/message")
 def message():
